@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Response, status, HTTPException, Depends
-from fastapi.middleware import Middleware
+from fastapi.middleware.cors import CORSMiddleware
 
 # from sqlalchemy.orm import Session
 from . import models
@@ -8,6 +8,15 @@ from .routers import post, user, auth, vote
 
 # models.Base.metadata.create_all(bind=engine)                                                # creates database tables if they don't exist
 app = FastAPI()           
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(post.router)                                                                 # importing all of the routes from post
 app.include_router(user.router)                                                                 # importing all of the routes from users
