@@ -26,15 +26,19 @@ def create_access_token(data: dict, expire_delta: timedelta | None = None):
     return encoded_jwt
 
 def verify_access_token(token: str, credentials_exception):
-    ...
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])         # checks the exp field for expiration
         id = payload.get("user_id")
         # print(id)
         if id is None:
             raise credentials_exception
         token_data = schemas.TokenData(id=id)                                # better to use if multiple fields in payload
-    # except ExpiredSignatureError:
+    except ExpiredSignatureError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token has expired",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     except InvalidTokenError:
         # print("hahahaha", e)
         raise credentials_exception

@@ -13,10 +13,6 @@ router = APIRouter(tags=['Authentication'])
 # def login (user_credentials: schemas.UserLogin, db: Session = Depends(get_db)):
 def login (user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.email == user_credentials.username).first() 
-    {
-        "username": "blah",
-        "password": "balasdfasdfas"
-    } 
     # fastapi stores users credentials in a field called username
     if not user:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid Credentials")
