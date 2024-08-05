@@ -17,7 +17,7 @@ class SocialMediaPost(BaseModel):
     published: bool=True
 
 try:
-    conn = psycopg.connect("dbname=fastapi user=postgres password=shrey@32200227", row_factory=dict_row)
+    conn = psycopg.connect("dbname=fastapi", user="postgres", password="shrey@32200227", row_factory=dict_row)
     cursor = conn.cursor()
     print("Database connection was successful")
 except Exception as e:
